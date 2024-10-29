@@ -1,0 +1,300 @@
+.random-chord-selector {
+  margin-bottom: 10px;
+}
+
+.tempo-slider {
+  width: 100%;
+}
+
+.preview-count-slider {
+  width: 100%;
+}
+
+.chord-select-container{
+  height: 108px;
+  width: 300px;
+}
+
+.control-button {
+  width: 140px;
+  height: 36px;
+  margin: 5px;
+  background-color: #035eb6;
+  border-color: #035eb6;
+}
+
+.add-active-pattern-list-item {
+  float: left;
+  width: 38px;
+  height: 38px;
+  background-color: #3aa753;
+  font-size: large;
+  color: white;
+  border-radius: 2rem;
+}
+
+.chord-note-button {
+  width: 71px;
+  height: 46px;
+  margin: 2px;
+  color: #f5f1f1e6;
+  background-color: #004085a1;
+  border-color: #21252966;
+  float: left;
+  border-width: thin;
+  font-size: larger;
+}
+
+.pattern-list-container {
+  width: 300px;
+  height: 44px;
+}
+
+.pattern-list {
+  margin: 8px;
+  float: left;
+  background-color: #e9ecef;
+}
+
+.active-pattern-list-item {
+  float: left;
+  margin: 5px;
+}
+
+.remove-pattern-list {
+  float: left;
+  width: 38px;
+  height: 38px;
+  background-color: #ce2f2f;
+  font-size: large;
+  color: white;
+  border-radius: 2rem;
+}
+
+.chord-display {
+  margin-top: 10px;
+}
+
+.chord{
+  display: inline-block;
+}
+
+.current-chord {
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 500;
+  height: 52px;
+  width: 128px;
+  text-align: left;
+  padding-top: 5px;
+  border-left: 1px solid #868e96;
+  padding-left: 7px;
+  letter-spacing: -1.5px;
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
+
+.highlighted-chord {
+  background-color: #faef96;
+}
+
+.last-chord-in-group {
+  border-right: 5px solid #000;
+}
+
+.next-chord {
+  margin-left: 10px;
+  color: gray;
+  font-size: 3rem;
+  width: 290px;
+  text-align: center;
+}
+
+.chords-main {
+  margin-bottom:50px;
+  margin-top: 50px;
+}
+
+.fixed-footer {
+  position: fixed;
+  height: 50px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px -3px 7px -2px #999;
+  background: rgba(211,211,211,0.7);
+}
+
+.metronome-container {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  top: 8px;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+  /*Not supported by ie*/
+  pointer-events: none;
+  /*Added to support ie11*/
+  background: none !important;
+}
+
+.met-beat {
+  margin-top: 20px;
+  width: 20px;
+  height: 20px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  background: lightgray;
+  display: inline-block;
+  margin: 7px;
+}
+
+.active-met-beat {
+  background: #cf6766;;
+  -webkit-box-shadow:0 0 20px #cf6766;;
+  -moz-box-shadow: 0 0 20px #cf6766;;
+  box-shadow:0 0 10px #cf6766;;
+}
+
+.measure-counter {
+  color: white;
+  opacity: .75;
+  padding-left: 5px;
+  padding-top: 1px;
+}
+
+/* Slider option CSS============================================*/
+.switch-with-label {
+  display: flex;
+  display: -webkit-flex;
+  /*Height of 34px plus two margins of 5px*/
+  height: 44px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 5px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #3fb0ac;;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #3fb0ac;;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/*End Slider option css============================================*/
+
+@media screen and (max-width:680px) {
+  .chord-display {
+    margin-top: 10px;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
+  .current-chord {
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 400;
+    width: 84px;
+    height: 38px;
+    text-align: left;
+    padding-top: 5px;
+    border-left: .5px solid #868e96;
+    padding-left: 3px;
+    letter-spacing: -1.8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  .last-chord-in-group {
+    border-right: 3px solid #000;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/*iphone 5*/
+@media screen and (max-width:321px) {
+  .chord-display {
+    margin-top: 10px;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
+  .current-chord {
+    font-size: 1rem;
+    font-weight: 400;
+    width: 74px;
+    height: 38px;
+    text-align: left;
+    padding-top: 5px;
+    border-left: .5px solid #868e96;
+    padding-left: 3px;
+    letter-spacing: -1.8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  .last-chord-in-group {
+    border-right: 3px solid #000;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}

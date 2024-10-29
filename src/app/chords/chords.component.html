@@ -1,0 +1,128 @@
+<div class="chords-main">
+  <h2 *ngIf="!isPlaying">Chord Coach</h2>
+
+  <div *ngIf="showMetronome" class="metronome-container">
+    <div *ngFor="let dot of metronomeLights" class="met-beat" [ngClass]="{'active-met-beat': dot.active}"></div>
+    <span class="measure-counter">{{measureIntervalCounter}}/{{measureInterval}}</span>
+  </div>
+
+  <ngb-alert *ngIf="showInfoAlert" type="light" [dismissible]="false">
+      Select your options and press play! The app will randomly select chords from your settings.
+  </ngb-alert>
+
+<!--   <ngb-alert *ngIf="alert" [type]="alert.type" [dismissible]="false">{{alert.message}}</ngb-alert> -->
+
+  <ngb-accordion *ngIf="!isPlaying" #acc="ngbAccordion" activeIds="">
+    <ngb-panel title="Chord Options">
+      <ng-template ngbPanelContent>
+          <div>
+
+            <div class="random-chord-selector">
+              <div class="random-chord-selector" id="chordPreviewBox">
+                Number of chords shown: <span id="chordPreviewCount">{{chordPreviewCount}}</span>
+                <input class="preview-count-slider" name="ram" type="range" min="1.0" max="120.0" step="1"  [(ngModel)]="chordPreviewCount" (ngModelChange)="chordPreviewCountChanged($event)">
+              </div>
+            </div>
+
+            <div class="random-chord-selector">
+              Root Note:
+              <ss-multiselect-dropdown [options]="selectedChords" [(ngModel)]="chordOptionsModel" (ngModelChange)="chordOptionsModelChanged($event)" [settings]="multiAnswerSettings"></ss-multiselect-dropdown>
+            </div>
+
+            <div class="random-chord-selector">
+              Chord Pattern:
+              <ss-multiselect-dropdown [options]="selectedChordPattern" [(ngModel)]="chordPatternsModel" (ngModelChange)="chordPatternsModelChanged($event)" [settings]="multiAnswerSettingsLongNames"></ss-multiselect-dropdown>
+            </div>
+
+            <div class="random-chord-selector">
+              Quality of single chords:
+              <ss-multiselect-dropdown [options]="selectedQuality" [(ngModel)]="qualityOptionsModel" (ngModelChange)="qualityOptionsModelChanged($event)" [settings]="multiAnswerSettings"></ss-multiselect-dropdown>
+            </div>
+
+            <div class="random-chord-selector">
+              Custom pattern (Major only for now):
+              <div class="chord-select-container">
+                <div *ngFor="let chord of customPatternChordsOptions; let idx = index">
+                  <button id="ChordNote" class="btn chord-note-button" (click)="addChordToActiveCustomPattern(chord)">{{ chord.name.romanNumeral }}</button>
+                </div>
+              </div>
+
+              <div class="pattern-list-container">
+                <button [disabled]="!activeCustomPattern.length" id="ChordNote" class="btn add-active-pattern-list-item" (click)="addActiveCustomPattern()">+</button>
+                <div *ngFor="let chord of activeCustomPattern; let idx = index" class="active-pattern-list-item" (click)="removeChordFromActiveCustomPattern(chord)">{{ chord.name.romanNumeral }}</div>
+              </div>
+
+              <div *ngFor="let customPatternKey of userChordPatterns; let idx = index" class="pattern-list-container">
+                <button id="RemoveCustomPattern" class="btn remove-pattern-list" (click)="removeCustomPattern(customPatternKey)">-</button>
+                <div class="pattern-list">{{ getCustomPatternName(customPatternKey) }}</div>
+              </div>
+           </div>
+
+          </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel title="Metronome Options">
+      <ng-template ngbPanelContent>
+        <div id="controls">
+
+          <div class="random-chord-selector" id="tempoBox">
+            Tempo: <span id="showTempo">{{tempo}}</span> BPM
+            <input class="tempo-slider" name="ram" type="range" min="30.0" max="380.0" step="1"  [(ngModel)]="tempo" (ngModelChange)="tempoChanged($event)">
+          </div>
+
+          <div>
+            <div class="random-chord-selector">
+              Beats:
+              <ss-multiselect-dropdown [options]="selectedBeat" [(ngModel)]="beatOptionsModel" (ngModelChange)="beatOptionsModelChanged($event)" [settings]="singleAnswerSettings"></ss-multiselect-dropdown>
+            </div>
+
+            <div class="random-chord-selector">
+              Measures Between Chord Change:
+              <ss-multiselect-dropdown [options]="selectedMeasureInterval" [(ngModel)]="measureIntervalOptionsModel" (ngModelChange)="measureIntervalOptionsModelChanged($event)" [settings]="singleAnswerSettings"></ss-multiselect-dropdown>
+            </div>
+
+            <div class="switch-with-label">
+              <span>Show metronome</span>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="showMetronome" (ngModelChange)="showMetronomeChanged($event)">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel title="Playback Options">
+      <ng-template ngbPanelContent>
+        <div id="controls">
+          <div class="switch-with-label">
+              <span>Generate new chords on loop</span>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="regenerateChordsOnLoop" (ngModelChange)="regenerateChordsOnLoopChanged($event)">
+                <span class="slider round"></span>
+              </label>
+          </div>
+
+          <div class="switch-with-label">
+            <span>Always scroll to active chord</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="scrollToActiveRow" (ngModelChange)="scrollToActiveRowChanged($event)">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+  <div class="chord-display">
+    <div *ngFor="let currentChord of chordQueue; let idx = index"
+      class="chord current-chord" id="chord-{{idx}}"
+      [ngClass]="{'last-chord-in-group': currentChord.isLastInGroup, 'highlighted-chord': idx===currentChordIndex}">{{ currentChord.name }}</div>
+  </div>
+
+  <div class="fixed-footer">
+    <div><button id="startstop-button" class="btn btn-primary control-button" (click)="playpause()">{{startStopMessage}}</button></div>
+    <div><button id="scramble" class="btn btn-primary control-button" (click)="scramble()">Scramble</button></div>
+  </div>
+</div>
